@@ -1,0 +1,19 @@
+<mvc:View controllerName="sap.Beutlhauser.HandOverProtocolEditLayout.controller.CopyLayoutDialog"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc">
+    <SelectDialog
+            title="Layout kopieren"
+            multiSelect="true"
+            search=".onSearchProductLines"
+            confirm=".onSelectToCopyLayouts"
+            showClearButton="true"
+            items="{path: 'handoverLayout>/ProductLineSet', filters: [{path: 'Stufe', operator: 'EQ', value1: '3'}]}">
+        <StandardListItem
+                title="{handoverLayout>Description}"
+                iconDensityAware="false"
+                iconInset="false"
+                info="{= ${handoverLayout>LayoutExists} === true ? 'Layout vorhanden' : 'kein Layout vorhanden'}" 
+                infoState="{= ${handoverLayout>LayoutExists} === true ? 'Warning' : 'Success'}"
+                type="Active" />
+    </SelectDialog>
+</mvc:View>

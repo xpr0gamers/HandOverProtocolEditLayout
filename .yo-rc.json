@@ -1,0 +1,16 @@
+{
+  "@sapui5/generator-sapui5-templates": {
+    "promptValues": {
+      "ApplicationTitle": "HandocerProtocolLayoutEditor",
+      "ApplicationDescription": "",
+      "FLP": false,
+      "ServiceBaseUri": "https://bhfgdl030.sap.beutlhauser.org:8400/sap/opu/odata/sap/ZPRT_HANDOVER_PROTOCOL_SRV/",
+      "DatasourceUrl": "/sap/opu/odata/sap/ZPRT_HANDOVER_PROTOCOL_SRV/",
+      "ObjectCollection": "RootItemSet",
+      "ObjectCollection_Key": "3",
+      "Object_Identifier": "3",
+      "Object_Number": "3",
+      "Object_UnitOfMeasure": "3"
+    }
+  }
+}

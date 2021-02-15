@@ -1,0 +1,13 @@
+{
+    "base": "./dist",
+    "conn_usestrictssl" : false,
+    "conn_server": "https://bhfgdl030.sap.beutlhauser.org:8400",
+    "conn_client" : "100",
+    "conn_user": "BH800149",
+    "abap_language": "DE",
+    "conn_password": "Beutlhauser1",
+    "abap_package": "ZFIORI",
+    "abap_bsp": "ZFIORI_HAND_LAY",
+    "abap_bsp_text": "Übergabeprotokoll Layout Designer",
+    "abap_transport": "FGDK900459"
+}

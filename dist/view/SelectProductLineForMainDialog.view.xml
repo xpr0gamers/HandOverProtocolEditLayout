@@ -1,0 +1,10 @@
+<mvc:View controllerName="sap.Beutlhauser.HandOverProtocolEditLayout.controller.SelectProductLineForMainDialog"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc">
+   <SelectDialog title="Produktlinie auswählen" confirm=".onSelectProductLine" search=".onSearchProductLines" items="{path: 'handoverLayout>/ProductLineSet', filters: [{path: 'Stufe', operator: 'EQ', value1: '3'}]}">
+        <StandardListItem title="{handoverLayout>Description}"
+        info="{= ${handoverLayout>LayoutExists} === true ? 'Layout vorhanden' : 'kein Layout vorhanden'}" 
+        infoState="{= ${handoverLayout>LayoutExists} === true ? 'Success' : 'Warning'}"
+        iconDensityAware="false" iconInset="false" type="Active" />
+    </SelectDialog>
+</mvc:View>

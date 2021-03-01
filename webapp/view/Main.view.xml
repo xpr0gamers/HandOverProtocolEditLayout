@@ -1,9 +1,9 @@
 <mvc:View controllerName="sap.Beutlhauser.HandOverProtocolEditLayout.controller.Main"
-    xmlns="sap.m"
-    xmlns:table="sap.ui.table"
-    xmlns:core="sap.ui.core"
-    xmlns:l="sap.ui.layout"
-    xmlns:mvc="sap.ui.core.mvc">
+          xmlns="sap.m"
+          xmlns:table="sap.ui.table"
+          xmlns:core="sap.ui.core"
+          xmlns:l="sap.ui.layout"
+          xmlns:mvc="sap.ui.core.mvc">
     <Page>
         <customHeader>
             <Toolbar>
@@ -13,8 +13,12 @@
                 <MenuButton useDefaultActionOnly="true">
                     <menu>
                         <Menu>
-                            <MenuItem text="Layout löschen" icon="sap-icon://delete" visible="{path: '/oObjects', formatter: '.isLayoutDeleteCopyVisibleFormatter'}" press="onClickDeleteLayout"></MenuItem>
-                            <MenuItem text="Layout kopieren" icon="sap-icon://copy" visible="{path: '/oObjects', formatter: '.isLayoutDeleteCopyVisibleFormatter'}" press="onClickCopyLayout"></MenuItem>
+                            <MenuItem text="Layout löschen" icon="sap-icon://delete"
+                                      visible="{path: '/oObjects', formatter: '.isLayoutDeleteCopyVisibleFormatter'}"
+                                      press="onClickDeleteLayout"></MenuItem>
+                            <MenuItem text="Layout kopieren" icon="sap-icon://copy"
+                                      visible="{path: '/oObjects', formatter: '.isLayoutDeleteCopyVisibleFormatter'}"
+                                      press="onClickCopyLayout"></MenuItem>
                         </Menu>
                     </menu>
                 </MenuButton>
@@ -24,71 +28,136 @@
             <VBox alignItems="Center" width="100%" height="50px" class="sapUiSmallMargin">
                 <VBox alignItems="Center">
                     <Label text="Produktlinie"/>
-                    <Input showValueHelp="true" valueHelpOnly="true" width="250px" value="{/oConfig/oSelectedProductLineItem/Description}" valueHelpRequest=".onValueHelpRequested">
+                    <Input showValueHelp="true" valueHelpOnly="true" width="250px"
+                           value="{/oConfig/oSelectedProductLineItem/Description}"
+                           valueHelpRequest=".onValueHelpRequested">
                     </Input>
                 </VBox>
             </VBox>
-                <l:Splitter height="calc(100% - 90px)" visible="{= ${/oConfig/oSelectedProductLineItem} !== null}">
-                    <table:TreeTable visibleRowCountMode="Auto" class="sapUiSizeCompact" id="TreeTableObjects" selectionMode="Single" rows="{path:'/oObjects', parameters: {arrayNames:['CriteriaItemSet'], numberOfExpandedLevels: 2}}" enableSelectAll="false" rowSelectionChange="onRowSelectionChangeObjects" ariaLabelledBy="title">
-                        <table:extension>
-                            <OverflowToolbar>
-                                <Title id="title" text="Objekte"/>
-                                <ToolbarSpacer/>
-                                <MenuButton useDefaultActionOnly="true">
-                                    <menu>
-                                        <Menu>
-                                            <MenuItem text="Überschrift hinzufügen" icon="sap-icon://add" press="onClickAddRootItem"></MenuItem>
-                                            <MenuItem text="Überschrift Löschen" icon="sap-icon://delete" visible="{path: '/oConfig/oSelectedObject', formatter: '.isCriteriaAddVisibleFormatter'}" press="onClickDeleteHeadline"></MenuItem>
-                                            <MenuItem text="Überschrift kopieren" icon="sap-icon://copy" visible="{path: '/oConfig/oSelectedObject', formatter: '.isCriteriaAddVisibleFormatter'}" press="onClickCopyHeadline"></MenuItem>
-                                            <MenuItem text="Kriterium hinzufügen" visible="{path: '/oConfig/oSelectedObject', formatter: '.isCriteriaAddVisibleFormatter'}" icon="sap-icon://journey-change" press="onClickAddCriterium"></MenuItem>
-                                            <MenuItem text="Kriterium Löschen" icon="sap-icon://delete" visible="{path: '/oConfig/oSelectedObject', formatter: '.isCriteriaDeleteVisibleFormatter'}" press="onClickDeleteCriteria"></MenuItem>
-                                        </Menu>
-                                    </menu>
-                                </MenuButton>
-                            </OverflowToolbar>
-                        </table:extension>
-                        <table:columns>
-                            <table:Column width="13rem">
-                                <Label text="Überschrift"/>
-                                <table:template>
-                                    <Input value="{GroupLabel}" visible="{= ${Level} === 0 }" class="sapUiSizeCompact" change="onChangeGroupLabelRootItem"/>
-                                </table:template>
-                            </table:Column>
-                            <table:Column width="9rem">
-                                <Label text="Bezeichnung"/>
-                                <table:template>
-                                    <Input value="{Bezeichnung}" visible="{= ${Level} === 1 }" class="sapUiSizeCompact" change="onChangeBezeichnungCriteria"/>
-                                </table:template>
-                            </table:Column>
-                            <table:Column width="11rem">
-                                <Label text="Kriterium"/>
-                                <table:template>
-                                    <Select items="{path: 'handoverLayout>/CriteriaSet', templateShareable: true}" change="onSelectCriteriaChange" selectedKey="{Criteria}" visible="{= ${Level} === 1 }" forceSelection="false">
-                                        <core:Item key="{handoverLayout>Key}" text="{handoverLayout>Description}"/>
-                                    </Select>
-                                </table:template>
-                            </table:Column>
-                                     <table:Column width="6rem">
-                                <Label text="Anzahl Bilder"/>
-                                <table:template>
-                                   		<StepInput
-                                            visible="{= ${Level} === 1 }"
-						                    value="{path: 'CountImages', type:'sap.ui.model.odata.type.Decimal'}"
-						                    min="0"
-						                    change="onSelectCriteriaChange"/>
-                                </table:template>
-                            </table:Column>
-                        </table:columns>
-                        <table:layoutData>
-                            <l:SplitterLayoutData size="700px"/>
-                        </table:layoutData>
-                    </table:TreeTable>
-                    <PDFViewer source="{/oConfig/sUrlHandoverPdf}" title="Übergabeprotokoll" id="handoverPdfViewer">
-                        <layoutData>
-                            <l:SplitterLayoutData size="auto"/>
-                        </layoutData>
-                    </PDFViewer>
-                </l:Splitter>
+            <l:Splitter height="calc(100% - 90px)" visible="{= ${/oConfig/oSelectedProductLineItem} !== null}">
+                <table:TreeTable visibleRowCountMode="Auto" class="sapUiSizeCompact" id="TreeTableObjects"
+                                 selectionMode="Single"
+                                 rows="{path:'/oObjects', parameters: {arrayNames:['CriteriaItemSet'], numberOfExpandedLevels: 2}}"
+                                 enableSelectAll="false" rowSelectionChange="onRowSelectionChangeObjects"
+                                 ariaLabelledBy="title">
+                    <table:extension>
+                        <OverflowToolbar>
+                            <Title id="title" text="Objekte"/>
+                            <ToolbarSpacer/>
+                            <MenuButton useDefaultActionOnly="true">
+                                <menu>
+                                    <Menu>
+                                        <MenuItem text="Überschrift hinzufügen" icon="sap-icon://add"
+                                                  press="onClickAddRootItem"></MenuItem>
+                                        <MenuItem text="Überschrift Löschen" icon="sap-icon://delete"
+                                                  visible="{path: '/oConfig/oSelectedObject', formatter: '.isCriteriaAddVisibleFormatter'}"
+                                                  press="onClickDeleteHeadline"></MenuItem>
+                                        <MenuItem text="Überschrift kopieren" icon="sap-icon://copy"
+                                                  visible="{path: '/oConfig/oSelectedObject', formatter: '.isCriteriaAddVisibleFormatter'}"
+                                                  press="onClickCopyHeadline"></MenuItem>
+                                        <MenuItem text="Kriterium hinzufügen"
+                                                  visible="{path: '/oConfig/oSelectedObject', formatter: '.isCriteriaAddVisibleFormatter'}"
+                                                  icon="sap-icon://journey-change"
+                                                  press="onClickAddCriterium"></MenuItem>
+                                        <MenuItem text="Kriterium Löschen" icon="sap-icon://delete"
+                                                  visible="{path: '/oConfig/oSelectedObject', formatter: '.isCriteriaDeleteVisibleFormatter'}"
+                                                  press="onClickDeleteCriteria"></MenuItem>
+                                    </Menu>
+                                </menu>
+                            </MenuButton>
+                        </OverflowToolbar>
+                    </table:extension>
+                    <table:columns>
+                        <table:Column width="13rem">
+                            <Label text="Überschrift"/>
+                            <table:template>
+                                <Input value="{GroupLabel}" visible="{= ${Level} === 0 }" class="sapUiSizeCompact"
+                                       change="onChangeGroupLabelRootItem"/>
+                            </table:template>
+                        </table:Column>
+                        <table:Column width="9rem">
+                            <Label text="Bezeichnung"/>
+                            <table:template>
+                                <Input value="{Bezeichnung}" visible="{= ${Level} === 1 }" class="sapUiSizeCompact"
+                                       change="onChangeBezeichnungCriteria"/>
+                            </table:template>
+                        </table:Column>
+                        <table:Column width="11rem">
+                            <Label text="Kriterium"/>
+                            <table:template>
+                                <Select items="{path: '/oCriteriaSet', templateShareable: true}"
+                                        change="onCriteriaChange($event, true)"
+                                        showSecondaryValues="true"
+                                        selectedKey="{Criteria}"
+                                        visible="{= ${Level} === 1}"
+                                        forceSelection="false">
+                                    <core:ListItem key="{Key}"
+                                                   text="{Description}"
+                                                   additionalText="{Key}"/>
+                                </Select>
+                            </table:template>
+                        </table:Column>
+                        <table:Column width="11rem">
+                            <Label text="Fotos verfügbar"/>
+                            <table:template>
+                                <HBox justifyContent="Center"
+                                      visible="{= ${Level} === 1 }">
+                                    <Input value="{ExpressionImagesAvailable}" editable="false"/>
+                                    <Button icon="sap-icon://edit"
+                                            type="Transparent"
+                                            enabled="{= ${Criteria}.length !== 0 }"
+                                            press="onPressCalcImage"/>
+                                </HBox>
+                            </table:template>
+                        </table:Column>
+                        <table:Column width="7rem">
+                            <Label text="Anzahl Bilder"/>
+                            <table:template>
+                                <StepInput
+                                        visible="{= ${Level} === 1 &amp;&amp; ${ExpressionImagesAvailable} !== ''}"
+                                        value="{path: 'CountImages', type:'sap.ui.model.odata.type.Decimal'}"
+                                        min="0"
+                                        max="999"
+                                        change="onCriteriaChange($event, false)"/>
+                            </table:template>
+                        </table:Column>
+                        <table:Column width="11rem">
+                            <Label text="Freitextfeld verfügbar"/>
+                            <table:template>
+                                <HBox justifyContent="Center"
+                                      visible="{= ${Level} === 1 }">
+                                    <Input value="{ExpressionFreeTextAvailable}" editable="false"/>
+                                    <Button icon="sap-icon://edit"
+                                            type="Transparent"
+                                            enabled="{= ${Criteria}.length !== 0 }"
+                                            press="onPressCalcFreeText"/>
+                                </HBox>
+                            </table:template>
+                        </table:Column>
+                        <table:Column width="7rem">
+                            <Label text="Freitextfeld muss"/>
+                            <table:template>
+                                <Switch visible="{= ${Level} === 1 &amp;&amp; ${ExpressionFreeTextAvailable} !== ''}"
+                                        customTextOn="Ja" customTextOff="Nein"
+                                        change="onCriteriaChange($event, false)"
+                                        state="{FreeTextRequired}">
+                                    <layoutData>
+                                        <FlexItemData growFactor="1" />
+                                    </layoutData>
+                                </Switch>
+                            </table:template>
+                        </table:Column>
+                    </table:columns>
+                    <table:layoutData>
+                        <l:SplitterLayoutData size="90%"/>
+                    </table:layoutData>
+                </table:TreeTable>
+                <PDFViewer source="{/oConfig/sUrlHandoverPdf}" title="Übergabeprotokoll" id="handoverPdfViewer">
+                    <layoutData>
+                        <l:SplitterLayoutData size="10%"/>
+                    </layoutData>
+                </PDFViewer>
+            </l:Splitter>
         </content>
     </Page>
 </mvc:View>

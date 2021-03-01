@@ -75,6 +75,7 @@
                                             visible="{= ${Level} === 1 }"
 						                    value="{path: 'CountImages', type:'sap.ui.model.odata.type.Decimal'}"
 						                    min="0"
+                                            max="999"
 						                    change="onSelectCriteriaChange"/>
                                 </table:template>
                             </table:Column>

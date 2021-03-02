@@ -39,15 +39,14 @@ sap.ui.define(["./BaseController", "sap/m/MessageBox"], function (BaseController
                 .read("/RootItemSet", {
                     urlParameters: {
                         $expand: "CriteriaItemSet",
-                        $filter: "Prodh eq '" + sProdh + "'",
+                        $filter: "Prodh eq '" + sProdh + "'"
                     },
+                    sorters: [
+                        new sap.ui.model.Sorter("SortPosition")
+                    ],
                     success: function (oObjects) {
                         const oResult = oObjects.results.map(function (oRootTemp) {
-                            oRootTemp.CriteriaItemSet = oRootTemp.CriteriaItemSet.results.map(function (oCriteriaTemp) {
-                                oCriteriaTemp.Level = 1;
-                                return oCriteriaTemp;
-                            });
-                            oRootTemp.Level = 0;
+                            oRootTemp.CriteriaItemSet = oRootTemp.CriteriaItemSet.results;
                             return oRootTemp;
                         });
                         this.getModel().setProperty("/oObjects", oResult);
@@ -97,29 +96,29 @@ sap.ui.define(["./BaseController", "sap/m/MessageBox"], function (BaseController
             const sCriteriaBezeichnung = "Kriterium Neu " + oRootItem.CriteriaItemSet.length;
             //odata create criteria
             this.getModel("handoverLayout").create(
-                    "/CriteriaItemSet",
-                    {
-                        RootItemGuid: oRootItem.Guid,
-                        Bezeichnung: sCriteriaBezeichnung,
-                    },
-                    {
-                        success: function (oResult) {
-                            this.getView().byId("handoverPdfViewer").invalidate(); //refresh pdf
-                            oRootItem.CriteriaItemSet.push({
-                                Guid: oResult.Guid,
-                                RootItemGuid: oRootItem.Guid,
-                                Bezeichnung: sCriteriaBezeichnung,
-                                Level: 1,
-                            });
-                            oObjects = oObjects.slice(); //create new Reference
-                            this.getModel().setProperty("/oObjects", oObjects);
-                            this.getView().byId("TreeTableObjects").setBusy(false);
-                        }.bind(this),
-                        error: function () {
-                            this.getView().byId("TreeTableObjects").setBusy(false);
-                        }.bind(this),
-                    }
-                );
+                "/CriteriaItemSet",
+                {
+                    RootItemGuid: oRootItem.Guid,
+                    Bezeichnung: sCriteriaBezeichnung,
+                },
+                {
+                    success: function (oResult) {
+                        this.getView().byId("handoverPdfViewer").invalidate(); //refresh pdf
+                        oRootItem.CriteriaItemSet.push({
+                            Guid: oResult.Guid,
+                            RootItemGuid: oRootItem.Guid,
+                            Bezeichnung: sCriteriaBezeichnung,
+                            Level: 1,
+                        });
+                        oObjects = oObjects.slice(); //create new Reference
+                        this.getModel().setProperty("/oObjects", oObjects);
+                        this.getView().byId("TreeTableObjects").setBusy(false);
+                    }.bind(this),
+                    error: function () {
+                        this.getView().byId("TreeTableObjects").setBusy(false);
+                    }.bind(this),
+                }
+            );
         },
         onClickDeleteLayout: function () {
             MessageBox.confirm("Layout sicher löschen?", {
@@ -166,14 +165,22 @@ sap.ui.define(["./BaseController", "sap/m/MessageBox"], function (BaseController
         },
         isCriteriaAddVisibleFormatter(oSelectedObject) {
             if (oSelectedObject) {
-                return oSelectedObject.getProperty("Level") === 0;
+                return oSelectedObject.getProperty("RootItemGuid") == null;
+            } else {
+                return false;
+            }
+        },
+        isCriteriaSortVisibleFormatter(oSelectedObject) {
+            if (oSelectedObject && oSelectedObject.getProperty("RootItemGuid") == null) {
+                //Überschrift muss mindestens zwei Kriterien besitzen, sonst macht eine sortierung keinen Sinn
+                return oSelectedObject.getProperty("CriteriaItemSet").length >= 2;
             } else {
                 return false;
             }
         },
         isCriteriaDeleteVisibleFormatter(oSelectedObject) {
             if (oSelectedObject) {
-                return oSelectedObject.getProperty("Level") === 1;
+                return oSelectedObject.getProperty("RootItemGuid") !== null;
             } else {
                 return false;
             }
@@ -343,7 +350,7 @@ sap.ui.define(["./BaseController", "sap/m/MessageBox"], function (BaseController
             const oSource = oEvent.getSource();
             oSource.addDependent(oCalcBuilderImageDialog); //wichtig, zur aktuell gedrückten Zeile hinzufügen
             const oCriteria = oSource.getBindingContext().getObject();
-            oCalcBuilderImageDialog.getController().showDialog(oCriteria, function (sExpression){
+            oCalcBuilderImageDialog.getController().showDialog(oCriteria, function (sExpression) {
                 this.getModel().setProperty("ExpressionImagesAvailable", sExpression, oSource.getBindingContext());
             }.bind(this));
         },
@@ -357,8 +364,37 @@ sap.ui.define(["./BaseController", "sap/m/MessageBox"], function (BaseController
             const oSource = oEvent.getSource();
             oSource.addDependent(oCalcBuilderFreeTextDialog); //wichtig, zur aktuell gedrückten Zeile hinzufügen
             const oCriteria = oSource.getBindingContext().getObject();
-            oCalcBuilderFreeTextDialog.getController().showDialog(oCriteria, function (sExpression){
+            oCalcBuilderFreeTextDialog.getController().showDialog(oCriteria, function (sExpression) {
                 this.getModel().setProperty("ExpressionFreeTextAvailable", sExpression, oSource.getBindingContext());
+            }.bind(this));
+        },
+        onClickSortHeadline: function (oEvent) {
+            const oSortHeadlineDialog = this.getOwnerComponent().runAsOwner(function () {
+                return new sap.ui.view({
+                    viewName: "sap.Beutlhauser.HandOverProtocolEditLayout.view.SortHeadlineDialog",
+                    type: sap.ui.core.mvc.ViewType.XML,
+                });
+            });
+            const oSource = oEvent.getSource();
+            oSource.addDependent(oSortHeadlineDialog); //wichtig, zur aktuell gedrückten Zeile hinzufügen
+            oSortHeadlineDialog.getController().showDialog(function (oObjects) {
+                this.getModel().setProperty("/oObjects", oObjects);
+                this.getView().byId("handoverPdfViewer").invalidate(); //refresh pdf
+            }.bind(this));
+        },
+        onClickSortCriterias: function (oEvent) {
+            const oSortCriteriasDialog = this.getOwnerComponent().runAsOwner(function () {
+                return new sap.ui.view({
+                    viewName: "sap.Beutlhauser.HandOverProtocolEditLayout.view.SortCriteriasDialog",
+                    type: sap.ui.core.mvc.ViewType.XML,
+                });
+            });
+            const oSource = oEvent.getSource();
+            oSource.addDependent(oSortCriteriasDialog); //wichtig, zur aktuell gedrückten Zeile hinzufügen
+            const oHeadlineItemContext = this.getModel().getProperty("/oConfig/oSelectedObject");
+            oSortCriteriasDialog.getController().showDialog(oHeadlineItemContext.getObject(), function (oCriterias) {
+                this.getModel().setProperty("CriteriaItemSet", oCriterias, oHeadlineItemContext);
+                this.getView().byId("handoverPdfViewer").invalidate(); //refresh pdf
             }.bind(this));
         }
     });

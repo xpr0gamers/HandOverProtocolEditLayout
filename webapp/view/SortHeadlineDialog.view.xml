@@ -1,0 +1,42 @@
+<mvc:View controllerName="sap.Beutlhauser.HandOverProtocolEditLayout.controller.SortHeadlineDialog"
+          xmlns="sap.m"
+          xmlns:mvc="sap.ui.core.mvc">
+    <Dialog>
+        <customHeader>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Text text="Überschriften Sortieren"></Text>
+                <ToolbarSpacer/>
+            </Toolbar>
+        </customHeader>
+        <beginButton>
+            <Button text="Schließen" press="onCloseDialog"/>
+        </beginButton>
+        <endButton>
+            <Button type="Accept" text="Speichern" press="onSaveOrder" icon="sap-icon://save"/>
+        </endButton>
+        <Table width="290px"
+               id="tableSortHeadline"
+               items="{path: '/oObjects', templateShareable: false}"
+               backgroundDesign="Solid"
+               class="sapUiSizeCompact">
+            <columns>
+                <Column width="45px"></Column>
+                <Column width="200px"></Column>
+                <Column width="45px"></Column>
+            </columns>
+            <items>
+                <ColumnListItem>
+                    <cells>
+                        <Button icon="sap-icon://arrow-bottom" press="onDown"/>
+                        <Input busyIndicatorDelay="500"
+                               editable="false"
+                               value="{GroupLabel}">
+                        </Input>
+                        <Button icon="sap-icon://arrow-top" press="onUp"/>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </Dialog>
+</mvc:View>

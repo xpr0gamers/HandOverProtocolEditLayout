@@ -1,12 +1,9 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
-    "sap/m/library"
-], function (Controller, UIComponent, mobileLibrary) {
+    "sap/m/MessageBox",
+], function (Controller, UIComponent, MessageBox) {
     "use strict";
-
-    // shortcut for sap.m.URLHelper
-    var URLHelper = mobileLibrary.URLHelper;
 
     return Controller.extend("sap.Beutlhauser.HandOverProtocolEditLayout.controller.BaseController", {
         /**
@@ -47,6 +44,9 @@ sap.ui.define([
             } else {
                 this.getRouter().navTo("worklist", {}, true);
             }
+        },
+        showErrorMessage: function (sText = "Fehler") {
+            MessageBox.error(sText);
         },
 
         /**

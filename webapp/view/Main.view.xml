@@ -49,6 +49,8 @@
                                     <Menu>
                                         <MenuItem text="Überschrift hinzufügen" icon="sap-icon://add"
                                                   press="onClickAddRootItem"></MenuItem>
+                                        <MenuItem text="Überschriften sortieren" icon="sap-icon://sort"
+                                                  press="onClickSortHeadline"></MenuItem>
                                         <MenuItem text="Überschrift Löschen" icon="sap-icon://delete"
                                                   visible="{path: '/oConfig/oSelectedObject', formatter: '.isCriteriaAddVisibleFormatter'}"
                                                   press="onClickDeleteHeadline"></MenuItem>
@@ -59,6 +61,9 @@
                                                   visible="{path: '/oConfig/oSelectedObject', formatter: '.isCriteriaAddVisibleFormatter'}"
                                                   icon="sap-icon://journey-change"
                                                   press="onClickAddCriterium"></MenuItem>
+                                        <MenuItem text="Kriterien sortieren" icon="sap-icon://sort"
+                                                  visible="{path: '/oConfig/oSelectedObject', formatter: '.isCriteriaSortVisibleFormatter'}"
+                                                  press="onClickSortCriterias"></MenuItem>
                                         <MenuItem text="Kriterium Löschen" icon="sap-icon://delete"
                                                   visible="{path: '/oConfig/oSelectedObject', formatter: '.isCriteriaDeleteVisibleFormatter'}"
                                                   press="onClickDeleteCriteria"></MenuItem>
@@ -71,14 +76,14 @@
                         <table:Column width="13rem">
                             <Label text="Überschrift"/>
                             <table:template>
-                                <Input value="{GroupLabel}" visible="{= ${Level} === 0 }" class="sapUiSizeCompact"
+                                <Input value="{GroupLabel}" visible="{= ${RootItemGuid} === undefined }"
                                        change="onChangeGroupLabelRootItem"/>
                             </table:template>
                         </table:Column>
                         <table:Column width="9rem">
                             <Label text="Bezeichnung"/>
                             <table:template>
-                                <Input value="{Bezeichnung}" visible="{= ${Level} === 1 }" class="sapUiSizeCompact"
+                                <Input value="{Bezeichnung}" visible="{= ${RootItemGuid} !== undefined }"
                                        change="onChangeBezeichnungCriteria"/>
                             </table:template>
                         </table:Column>
@@ -89,7 +94,7 @@
                                         change="onCriteriaChange($event, true)"
                                         showSecondaryValues="true"
                                         selectedKey="{Criteria}"
-                                        visible="{= ${Level} === 1}"
+                                        visible="{= ${RootItemGuid} !== undefined }"
                                         forceSelection="false">
                                     <core:ListItem key="{Key}"
                                                    text="{Description}"
@@ -101,7 +106,7 @@
                             <Label text="Fotos verfügbar"/>
                             <table:template>
                                 <HBox justifyContent="Center"
-                                      visible="{= ${Level} === 1 }">
+                                      visible="{= ${RootItemGuid} !== undefined }">
                                     <Input value="{ExpressionImagesAvailable}" editable="false"/>
                                     <Button icon="sap-icon://edit"
                                             type="Transparent"
@@ -114,7 +119,7 @@
                             <Label text="Anzahl Bilder"/>
                             <table:template>
                                 <StepInput
-                                        visible="{= ${Level} === 1 &amp;&amp; ${ExpressionImagesAvailable} !== ''}"
+                                        visible="{= ${RootItemGuid} !== undefined &amp;&amp; ${ExpressionImagesAvailable}.length !== 0}"
                                         value="{path: 'CountImages', type:'sap.ui.model.odata.type.Decimal'}"
                                         min="0"
                                         max="999"
@@ -125,7 +130,7 @@
                             <Label text="Freitextfeld verfügbar"/>
                             <table:template>
                                 <HBox justifyContent="Center"
-                                      visible="{= ${Level} === 1 }">
+                                      visible="{= ${RootItemGuid} !== undefined }">
                                     <Input value="{ExpressionFreeTextAvailable}" editable="false"/>
                                     <Button icon="sap-icon://edit"
                                             type="Transparent"
@@ -137,7 +142,7 @@
                         <table:Column width="7rem">
                             <Label text="Freitextfeld muss"/>
                             <table:template>
-                                <Switch visible="{= ${Level} === 1 &amp;&amp; ${ExpressionFreeTextAvailable} !== ''}"
+                                <Switch visible="{= ${RootItemGuid} !== undefined &amp;&amp; ${ExpressionFreeTextAvailable}.length !== 0}"
                                         customTextOn="Ja" customTextOff="Nein"
                                         change="onCriteriaChange($event, false)"
                                         state="{FreeTextRequired}">

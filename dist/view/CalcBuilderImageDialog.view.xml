@@ -1,0 +1,48 @@
+<mvc:View controllerName="sap.Beutlhauser.HandOverProtocolEditLayout.controller.CalcBuilderImageDialog"
+          xmlns="sap.m"
+          xmlns:core="sap.ui.core"
+          xmlns:commons="sap.suite.ui.commons"
+          xmlns:mvc="sap.ui.core.mvc">
+    <Dialog>
+        <customHeader>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Text text="Calculation Builder Fotos"></Text>
+                <ToolbarSpacer/>
+            </Toolbar>
+        </customHeader>
+        <beginButton>
+            <Button text="Schließen" press="onCloseDialog"/>
+        </beginButton>
+        <endButton>
+            <Button type="Accept" text="Speichern" press="onSave" icon="sap-icon://save"/>
+        </endButton>
+        <commons:CalculationBuilder
+                disabledDefaultTokens="sqrt;roundUp;roundDown;round;abs;+;-;/;*;(;);,"
+                allowStringLiterals="true"
+                wrapItemsInExpression="false"
+                expression="{/sExpression}"
+                id="builderImage">
+            <commons:variables>
+                <commons:CalculationBuilderVariable
+                        key="%Criteria%"
+                        label="Kriterium">
+                </commons:CalculationBuilderVariable>
+            </commons:variables>
+            <commons:groups>
+                <commons:CalculationBuilderGroup setSelection="setSelection"
+                                                 title="Festwerte"
+                                                 key="fixed_values_criteria"
+                                                 icon="sap-icon://account"
+                                                 description="Festwerte zu Kriterien">
+                    <commons:customView>
+                        <SelectList items="{path: '/oFixedValues'}"
+                                    itemPress="onCriteriaSelect">
+                            <core:Item key="{sKey}" text="{sValue}"/>
+                        </SelectList>
+                    </commons:customView>
+                </commons:CalculationBuilderGroup>
+            </commons:groups>
+        </commons:CalculationBuilder>
+    </Dialog>
+</mvc:View>

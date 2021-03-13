@@ -15,28 +15,37 @@
         <endButton>
             <Button type="Accept" text="Speichern" press="onSaveOrder" icon="sap-icon://save"/>
         </endButton>
-        <Table width="290px"
-               id="tableSortHeadline"
-               items="{path: '/oObjects', templateShareable: false}"
-               backgroundDesign="Solid"
-               class="sapUiSizeCompact">
-            <columns>
-                <Column width="45px"></Column>
-                <Column width="200px"></Column>
-                <Column width="45px"></Column>
-            </columns>
-            <items>
-                <ColumnListItem>
-                    <cells>
-                        <Button icon="sap-icon://arrow-bottom" press="onDown"/>
-                        <Input busyIndicatorDelay="500"
-                               editable="false"
-                               value="{GroupLabel}">
-                        </Input>
-                        <Button icon="sap-icon://arrow-top" press="onUp"/>
-                    </cells>
-                </ColumnListItem>
-            </items>
-        </Table>
+        <VBox alignItems="Center">
+            <Table width="300px"
+                   id="tableSortHeadline"
+                   items="{path: '/oObjects', templateShareable: false}"
+                   mode="SingleSelectMaster"
+                   class="sapUiSizeCompact">
+                <headerToolbar>
+                    <OverflowToolbar height="30px">
+                        <content>
+                            <Title text="Überschriften"/>
+                            <ToolbarSpacer/>
+                            <Button
+                                    icon="sap-icon://navigation-up-arrow"
+                                    press="onUp"/>
+                            <Button
+                                    icon="sap-icon://navigation-down-arrow"
+                                    press="onDown"/>
+                        </content>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column></Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{GroupLabel}"></Text>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
     </Dialog>
 </mvc:View>

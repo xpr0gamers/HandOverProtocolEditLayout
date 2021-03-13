@@ -15,9 +15,10 @@ sap.ui.define(
             onCloseDialog: function () {
                 this.oDialog.close();
             },
-            onDown: function (oEvent) {
-                const oTable = oEvent.getSource().getParent().getParent();
-                const nCurrentIndex = oTable.indexOfItem(oEvent.getSource().getParent());
+            onDown: function () {
+                const oTable = this.byId("tableSortHeadline");
+                const nCurrentIndex = oTable.indexOfItem(oTable.getSelectedItem());
+                oTable.removeSelections();
                 const oAllItems = oTable.getItems();
                 const oItemChange = oAllItems[nCurrentIndex];
                 oTable.removeItem(nCurrentIndex);
@@ -27,10 +28,12 @@ sap.ui.define(
                 } else {
                     oTable.insertItem(oItemChange, nCurrentIndex + 1);
                 }
+                oItemChange.setSelected(true);
             },
-            onUp: function (oEvent) {
-                const oTable = oEvent.getSource().getParent().getParent();
-                const nCurrentIndex = oTable.indexOfItem(oEvent.getSource().getParent());
+            onUp: function () {
+                const oTable = this.byId("tableSortHeadline");
+                const nCurrentIndex = oTable.indexOfItem(oTable.getSelectedItem());
+                oTable.removeSelections();
                 const oAllItems = oTable.getItems();
                 const oItemChange = oAllItems[nCurrentIndex];
                 oTable.removeItem(nCurrentIndex);
@@ -40,6 +43,7 @@ sap.ui.define(
                 } else {
                     oTable.insertItem(oItemChange, nCurrentIndex - 1);
                 }
+                oItemChange.setSelected(true);
             },
             onSaveOrder: function () {
                 this.oDialog.setBusy(true);

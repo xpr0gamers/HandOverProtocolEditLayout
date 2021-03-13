@@ -180,7 +180,7 @@ sap.ui.define(["./BaseController", "sap/m/MessageBox"], function (BaseController
         },
         isCriteriaDeleteVisibleFormatter(oSelectedObject) {
             if (oSelectedObject) {
-                return oSelectedObject.getProperty("RootItemGuid") !== null;
+                return oSelectedObject.getProperty("RootItemGuid") !== null && oSelectedObject.getProperty("RootItemGuid") !== undefined;
             } else {
                 return false;
             }
